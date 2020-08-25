@@ -11,6 +11,6 @@ $ docker run  -d -p <port>:80 --name simple-reactjs-app jariartes/simple-reactjs
 ```
 Replace *\<port\>* with the port number you want to use for the example app.
 
-Connect your browser to http://localhost:\<*port*\>.
+Connect your browser to http://localhost:<*port*\>.
 
 You should see a list of customers and buttons that allow viewing customers' details.
