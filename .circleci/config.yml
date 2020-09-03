@@ -11,16 +11,10 @@ workflows:
           deploy: false
           registry: registry.heroku.com
           tag: latest
-      - deploy-to-heroku:
-          requires: 
-            - docker/publish
+          after_build:
+            - run: |
+                heroku auth:whoami
+                heroku container:login
+                heroku container:push -a $HEROKU_APP_NAME web
+                heroku container:release -a $HEROKU_APP_NAME web
 
-jobs:
-  deploy-to-heroku:
-    machine: true
-    steps:
-      - run: |
-            heroku auth:whoami
-            heroku container:login
-            heroku container:push -a $HEROKU_APP_NAME web
-            heroku container:release -a $HEROKU_APP_NAME web
