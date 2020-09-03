@@ -1,17 +1,25 @@
-orbs:
-  deploy-to-heroku: betterdoc/deploy-to-heroku@4.1.0
-  docker: circleci/docker@1.4.0
-
 version: 2.1
+
+orbs:
+  docker: circleci/docker@1.4.0
 
 workflows:
   build-and-deploy:
     jobs:
       - docker/publish:
-          image: $HEROKU_APP_NAME/web
+          image: $DOCKER_IMAGE_NAME
           deploy: false
-      - deploy-to-heroku/docker-build-release:
-          app-name: $HEROKU_APP_NAME
-          app-type: web
+      - deploy-to-heroku:
           requires: 
             - docker/publish
+
+jobs:
+  deploy-to-heroku:
+    machine: true
+    steps:
+      - run: |
+            heroku auth:whoami
+            heroku container:login
+            docker tag $DOCKER_IMAGE_NAME registry.heroku.com/$HEROKU_APP_NAME/web
+            heroku container:push -a $HEROKU_APP_NAME
+            heroku container:release -a $HEROKU_APP_NAME
