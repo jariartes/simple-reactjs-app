@@ -5,12 +5,9 @@ orbs:
 version: 2.1
 
 workflows:
-  build:
+  build-and-deploy:
     jobs:
       - docker/publish:
-        image: $HEROKU_APP_NAME/web
-        deploy: false
-        
-  deploy:
-    jobs:
+          image: $HEROKU_APP_NAME/web
+          deploy: false
       - heroku/push-docker-image
