@@ -9,6 +9,7 @@ workflows:
       - docker/publish:
           image: $DOCKER_IMAGE_NAME
           deploy: false
+          tag: registry.heroku.com/$HEROKU_APP_NAME/web
       - deploy-to-heroku:
           requires: 
             - docker/publish
@@ -20,6 +21,5 @@ jobs:
       - run: |
             heroku auth:whoami
             heroku container:login
-            docker tag $DOCKER_IMAGE_NAME registry.heroku.com/$HEROKU_APP_NAME/web
             heroku container:push -a $HEROKU_APP_NAME
             heroku container:release -a $HEROKU_APP_NAME
