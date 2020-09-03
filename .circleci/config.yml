@@ -1,7 +1,19 @@
 version: 2.1
+
 orbs:
   heroku: circleci/heroku@1.2.2
+  docker: circleci/docker@1.4.0
+
 workflows:
-  heroku_deploy:
+  build:
     jobs:
-      - heroku/deploy-via-git
+      - docker/build:
+        image: $HEROKU_APP_NAME/web
+  deploy:
+    jobs:
+      - heroku/deploy-via-git: 
+        requires:
+          - build
+        filters:
+          branches:
+            only: circleci-project-setup
