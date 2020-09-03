@@ -7,9 +7,9 @@ workflows:
   build-and-deploy:
     jobs:
       - docker/publish:
-          image: $DOCKER_IMAGE_NAME
+          image: $HEROKU_APP_NAME
           deploy: false
-          tag: registry.heroku.com/$HEROKU_APP_NAME/web
+          registry: registry.heroku.com
       - deploy-to-heroku:
           requires: 
             - docker/publish
