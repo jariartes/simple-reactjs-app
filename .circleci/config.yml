@@ -10,5 +10,6 @@ workflows:
       - docker/publish:
           image: $HEROKU_APP_NAME/web
           deploy: false
-      - heroku/push-docker-image
-          requires: docker/publish
+      - heroku/push-docker-image:
+          requires: 
+            - docker/publish
